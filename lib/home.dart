@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:secure_volt/view%20service%20center.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:secure_volt/profile.dart';
 import 'package:secure_volt/view_charging_stations.dart';
@@ -87,6 +88,7 @@ class _HomePageState extends State<HomePage> {
                 // --- ALL FUNCTIONS IN WHITE CARDS ---
                 _buildWhiteCardTile("My Profile", Icons.person_outline, () => Navigator.push(context, MaterialPageRoute(builder: (context) => ViewProfile()))),
                 _buildWhiteCardTile("Manage My EV", Icons.ev_station_outlined, () => Navigator.push(context, MaterialPageRoute(builder: (context) => ManageVehiclePage()))),
+                _buildWhiteCardTile("Service Centers", Icons.ev_station_outlined, () => Navigator.push(context, MaterialPageRoute(builder: (context) => NearestServiceCentersPage()))),
                 _buildWhiteCardTile("Booking & Maintenance", Icons.analytics_outlined, () => Navigator.push(context, MaterialPageRoute(builder: (context) => UserRequestStatusPage()))),
                 _buildWhiteCardTile("Parking Status", Icons.garage_outlined, () => Navigator.push(context, MaterialPageRoute(builder: (context) => ParkingBookingStatusPage()))),
                 _buildWhiteCardTile("Station Responses", Icons.feedback_outlined, () => Navigator.push(context, MaterialPageRoute(builder: (context) => UserStationComplaintStatusPage()))),
