@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:secure_volt/view_maintainance_services.dart';
+import 'package:secure_volt/view_service_feedback.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -280,14 +281,25 @@ class _NearestServiceCentersPageState extends State<NearestServiceCentersPage> {
                 ),
 
                 // Get Directions Text Button
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton.icon(
-                    // Updated to parse 'lat' and 'long' exactly as they arrive from Django
-                    onPressed: () => openGoogleMaps(double.tryParse(s["lat"].toString()) ?? 0, double.tryParse(s["long"].toString()) ?? 0),
-                    icon: const Icon(Icons.directions_outlined),
-                    label: const Text("Get Directions"),
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton.icon(
+                      onPressed: () async {
+                        final sh = await SharedPreferences.getInstance();
+                        sh.setString('sid', s['id']?.toString() ?? '');
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => const ViewServiceFeedback()));
+                      },
+                      icon: Icon(Icons.reviews_outlined, color: bressayBrown),
+                      label: Text("View Reviews", style: TextStyle(color: bressayBrown)),
+                    ),
+                    TextButton.icon(
+                      // Updated to parse 'lat' and 'long' exactly as they arrive from Django
+                      onPressed: () => openGoogleMaps(double.tryParse(s["lat"].toString()) ?? 0, double.tryParse(s["long"].toString()) ?? 0),
+                      icon: const Icon(Icons.directions_outlined),
+                      label: const Text("Get Directions"),
+                    ),
+                  ],
                 )
               ],
             ),
