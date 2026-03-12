@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:secure_volt/razorpay_charging_slot.dart'; // CHARGING PAYMENT
 import 'package:secure_volt/razorpay_maintainace.dart'; // MAINTENANCE PAYMENT
+import 'package:secure_volt/service%20feedback.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserRequestStatusPage extends StatefulWidget {
@@ -202,6 +203,7 @@ class _UserRequestStatusPageState extends State<UserRequestStatusPage> {
 
           _statusBadge(status),
 
+          // --- PROCEED TO PAY BUTTON (approved) ---
           if (status == "approved") ...[
             const SizedBox(height: 15),
             SizedBox(
@@ -219,6 +221,36 @@ class _UserRequestStatusPageState extends State<UserRequestStatusPage> {
                   ));
                 },
                 child: const Text("PROCEED TO PAY", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+              ),
+            ),
+          ],
+
+          // --- FEEDBACK BUTTON (paid + maintenance only) ---
+          if (status == "paid" && !isCharging) ...[
+            const SizedBox(height: 15),
+            SizedBox(
+              width: double.infinity,
+              height: 48,
+              child: OutlinedButton.icon(
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(color: bressayBrown, width: 1.5),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+                icon: Icon(Icons.star_rate_rounded, color: bressayBrown, size: 20),
+                label: Text(
+                  "GIVE FEEDBACK",
+                  style: TextStyle(color: bressayBrown, fontWeight: FontWeight.bold, fontSize: 13),
+                ),
+                onPressed: () async {
+                  final sp = await SharedPreferences.getInstance();
+                  await sp.setString("feedback_sid", data["sid"].toString());
+                  if (context.mounted) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const ServiceFeedback()),
+                    );
+                  }
+                },
               ),
             ),
           ],
